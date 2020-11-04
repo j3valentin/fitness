@@ -1,0 +1,78 @@
+<md-card>
+  <md-card-header>
+    <img md-card-avatar *ngIf="provider?.image" src="{{URL}}{{provider?.image}}" />
+    <md-card-title>
+      <h3 [ngClass]="provider?.contacts?.length === 1 ? 'office' : ''">{{provider?.name}}</h3>
+    </md-card-title>
+    <md-card-subtitle>
+      <p *ngIf="provider?.contacts.length === 1">
+        {{provider?.contacts[0]?.city}}, {{provider?.contacts[0]?.state}}, {{provider?.contacts[0]?.country}}
+      </p>
+      {{provider.web}}
+    </md-card-subtitle>
+  </md-card-header>
+  <md-card-content>
+    <md-tab-group>
+      <md-tab label="{{'OFFICES' | translate}}" *ngIf="provider?.contacts?.length > 1">
+        <div *ngFor="let contact of provider.contacts">
+          <md-card class="contact-card">
+            <md-card-header>
+              <md-card-title>{{contact?.name}}</md-card-title>
+              <md-card-subtitle>
+                {{contact?.city}}, {{contact?.state}}, {{contact?.country}}
+              </md-card-subtitle>
+            </md-card-header>
+            <md-card-content *ngIf="securityService?.hasRole('ROLE_ADMIN') || securityService?.hasRole('ROLE_SUPER_ADMIN')">
+              <p>{{contact?.address}}</p>
+              <p>{{contact?.phone}}</p>
+            </md-card-content>
+          </md-card>
+        </div>
+      </md-tab>
+      <md-tab label="{{'PLANS' | translate}}" *ngIf="plans?.length > 0">
+        <div *ngFor="let plan of plans" >
+          <md-card *ngIf="!plan.internal">
+            <md-card-header>
+              <md-card-title>
+                <h2>{{plan?.name}}</h2>
+              </md-card-title>
+            </md-card-header>
+            <md-card-content>
+              <table>
+                <tr>
+                  <td><b>{{'AMOUNT' | translate}}:</b></td>
+                  <td>{{plan?.amount | currency:'USD':true}}</td>
+                </tr>
+                <tr>
+                  <td><b>{{'DESCRIPTION' | translate}}:</b></td>
+                  <td>{{plan?.description}}</td>
+                </tr>
+              </table>
+            </md-card-content>
+          </md-card>
+        </div>
+      </md-tab>
+      <md-tab label="{{'AGREEMENTS' | translate}}" *ngIf="provider?.terms?.length > 0 && agrements?.length > 0 && securityService.hasRole('ROLE_ADMIN')">
+        <div *ngFor="let agreement of agrements">
+          <md-card *ngIf="agreement.internal">
+            <md-card-header>
+              <md-card-title>
+                <h2>{{agreement?.name}}</h2>
+              </md-card-title>
+            </md-card-header>
+            <md-card-content>
+              <table>
+                <tr>
+                  <td><b>{{'DESCRIPTION' | translate}}:</b></td>
+                  <td>{{agreement?.description}}</td>
+                </tr>
+              </table>
+            </md-card-content>
+          </md-card>
+        </div>
+      </md-tab>
+    </md-tab-group>
+
+  </md-card-content>
+
+</md-card>

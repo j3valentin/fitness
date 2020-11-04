@@ -1,0 +1,169 @@
+<md-progress-bar *ngIf="loading !== 0" color="warn" mode="indeterminate"></md-progress-bar>
+<form (ngSubmit)="save()" #customerForm="ngForm">
+  <md-card>
+    <md-card-content>
+      <md-input-container class="middle-width">
+        <input mdInput name="customer-first-name" required
+                autocapitalize="words" autocomplete="given-name" autofocus
+                placeholder="{{'FIRST_NAME' | translate}}"
+                [(ngModel)]="customer.name">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput name="last-name" required
+               autocapitalize="words" autocomplete="family-name" autofocus
+               placeholder="{{'LAST_NAME' | translate}}"
+               [(ngModel)]="customer.natural.lastName">
+      </md-input-container>
+
+      <md-input-container class="location">
+        <input mdInput name="country" required
+               autocomplete="country"
+               placeholder="{{'COUNTRY' | translate}}"
+               [pattern]="countriesPattern"
+               [(ngModel)]="customer.contacts[0].country"
+               (change)="getDocuments()"
+               [formControl]="stateCtrl"
+               [mdAutocomplete]="auto">
+      </md-input-container>
+      <md-autocomplete #auto="mdAutocomplete">
+        <md-option *ngFor="let x of filteredCountries | async" [value]="x[1]">
+          {{ x[1] }}
+        </md-option>
+      </md-autocomplete>
+
+      <md-input-container class="location">
+        <input mdInput name="state" required
+               placeholder="{{'STATE' | translate}}"
+               [(ngModel)]="customer.contacts[0].state">
+      </md-input-container>
+      <md-input-container class="location">
+        <input mdInput name="city" required
+               placeholder="{{'CITY' | translate}}"
+               [(ngModel)]="customer.contacts[0].city">
+      </md-input-container>
+
+      <md-input-container class="full-width">
+        <input mdInput name="address"required
+               autocomplete="street-address"
+               placeholder="{{'ADDRESS' | translate}}"
+               [(ngModel)]="customer.contacts[0].address">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput type="tel" name="phone" required
+               autocomplete="tel" inputmode="tel"
+               placeholder="{{'PHONE'| translate}}"
+               [(ngModel)]="customer.contacts[0].phone">
+        <md-hint align="end"></md-hint>
+      </md-input-container>
+
+      <md-select name="doctype" class="middle-width" required
+                 placeholder="{{'DOC_TYPE' | translate}}"
+                 [(ngModel)]="customer.documentType">
+        <md-option *ngFor="let type of types" [value]="type.id">
+          {{ type.name }}
+        </md-option>
+      </md-select>
+
+      <md-input-container class="middle-width">
+        <input mdInput name="document" required
+               autocomplete="off" inputmode="numeric"
+               placeholder="{{'DOCUMENT' | translate}}"
+               [(ngModel)]="customer.documentNumber">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput type="email" name="email" required
+               autocomplete="email" inputmode="email"
+               placeholder="{{'MAIL' | translate}}"
+               [(ngModel)]="customer.natural.email">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput name="customer-birthdate" required
+               [mdDatepicker]="picker" placeholder="{{'BIRTH_DATE' | translate}}"
+               *hideItDevice="['mobile','tablet']"
+               [min]="minDateDesktop" [max]="maxDateDesktop"
+               [(ngModel)]="customer.natural.birthDate">
+        <button *hideItDevice="['mobile','tablet']" mdSuffix
+                 [mdDatepickerToggle]="picker"></button>
+        <md-datepicker #picker></md-datepicker>
+
+        <input mdInput name="customer-birthdate" required
+               autocomplete="bday" autofocus type="date"
+               *hideItDevice="['desktop']"
+               [min]="minDateMobile" [max]="maxDateMobile"
+               placeholder="{{'BIRTH_DATE' | translate}}"
+               [(ngModel)]="customer.natural.birthDate">
+      </md-input-container>
+
+        <md-select name="plans" class="middle-width" required
+            placeholder="{{'PLANS' | translate}}"
+            [(ngModel)]="agreement.terms.id"
+            (ngModelChange)="planChange()">
+          <md-option *ngFor="let plan of plans" [value]="plan.id">
+            {{plan.name}}
+          </md-option>
+        </md-select>
+
+        <md-input-container class="middle-width">
+          <input mdInput name="periodicity" readonly
+                placeholder="{{'PERIODICITY' | translate}}"
+                [value]="selectedPlan?.periodicity">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput name="customer-start" required
+               [disabled]="!selectedPlan"
+               [mdDatepicker]="picker2" placeholder="{{'START_DATE' | translate}}"
+               *hideItDevice="['mobile','tablet']"
+               [min]="startDateMin" [max]="startDateMax"
+               [(ngModel)]="agreement.start"
+               (ngModelChange)="planChange()">
+
+        <button *hideItDevice="['mobile','tablet']" mdSuffix
+                 [disabled]="!selectedPlan"
+                 [mdDatepickerToggle]="picker2"></button>
+        <md-datepicker #picker2></md-datepicker>
+
+        <input mdInput name="customer-start" required
+               [disabled]="!selectedPlan"
+               autocomplete="bday" autofocus type="date"
+               *hideItDevice="['desktop']"
+               [min]="startDateMinMob" [max]="startDateMin"
+               placeholder="{{'START_DATE' | translate}}"
+               (ngModelChange)="planChange()"
+               [(ngModel)]="agreement.start">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput name="end" readonly
+               placeholder="{{'END_DATE' | translate}}"
+               [value]="agreement.end | date: 'MM/dd/yyyy'">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput name="quantity" required
+               [disabled]="!selectedPlan" type="number"
+               min="0"
+               placeholder="{{'QUANTITY' | translate}}"
+               [(ngModel)]="agreement.quantity"
+               (ngModelChange)="quantityChange()">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput name="amount" readonly
+               placeholder="{{'AMOUNT' | translate}}"
+               [value]="agreement.amount">
+      </md-input-container>
+
+    </md-card-content>
+    <md-card-actions align="start|end">
+      <button md-raised-button type="submit"
+              [disabled]="!customerForm.form.valid || loading !== 0">
+                {{(loading === 1 ? 'SUBMITING' : (loading === 2 ? 'SUCCES' : 'SUBMIT'))| translate}}
+      </button>
+    </md-card-actions>
+  </md-card>
+</form>

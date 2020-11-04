@@ -1,0 +1,185 @@
+<md-progress-bar *ngIf="loading !== 0" color="warn" mode="indeterminate"></md-progress-bar>
+<form (ngSubmit)="save()" #personForm="ngForm">
+  <md-card>
+    <md-card-content>
+
+      <md-input-container class="location">
+        <input mdInput name="country" required autofocus
+               autocomplete="country"
+               placeholder="{{'COUNTRY' | translate}}"
+               [pattern]="countriesPattern"
+               [(ngModel)]="person.contacts[0].country"
+               (change)="getDocuments()"
+               [formControl]="stateCtrl"
+               [mdAutocomplete]="auto">
+      </md-input-container>
+      <md-autocomplete #auto="mdAutocomplete">
+        <md-option *ngFor="let x of filteredCountries | async" [value]="x[1]">
+          {{ x[1] }}
+        </md-option>
+      </md-autocomplete>
+
+      <md-input-container class="location">
+        <input mdInput name="state" required
+               placeholder="{{'STATE' | translate}}"
+               [(ngModel)]="person.contacts[0].state">
+      </md-input-container>
+      <md-input-container class="location">
+        <input mdInput name="city" required
+               placeholder="{{'CITY' | translate}}"
+               [(ngModel)]="person.contacts[0].city">
+      </md-input-container>
+
+      <md-input-container class="full-width">
+        <input mdInput name="address" autocomplete="street-address"
+               [required]="person.documentType===31"
+               placeholder="{{'ADDRESS' | translate}}"
+               [(ngModel)]="person.contacts[0].address">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput type="tel" name="phone" required
+               autocomplete="tel" inputmode="tel"
+               placeholder="{{'PHONE'| translate}}"
+               [(ngModel)]="person.contacts[0].phone">
+        <md-hint align="end"></md-hint>
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput name="contactName" required
+               placeholder="{{'OFFICE' | translate}}"
+               [(ngModel)]="person.contacts[0].name">
+      </md-input-container>
+
+      <md-select name="doctype" class="middle-width" required
+                 placeholder="{{'DOC_TYPE' | translate}}"
+                 [(ngModel)]="person.documentType"
+                 (change)="docTypeChange()">
+        <md-option *ngFor="let type of types" [value]="type.id">
+          {{ type.name }}
+        </md-option>
+      </md-select>
+
+      <md-input-container class="middle-width">
+        <input mdInput name="document" required
+               autocomplete="off" [type]="person.documentType === 41 ? 'text' : 'number'"
+               placeholder="{{'DOCUMENT' | translate}}"
+               [(ngModel)]="person.documentNumber">
+      </md-input-container>
+
+      <md-input-container [ngClass]="{ 'full-width' : person.documentType === 31,
+        'middle-width' : person.documentType !== 31 }">
+        <input mdInput name="company" required
+               autocapitalize="words" autocomplete="organization"
+               [placeholder]="(person.documentType === 31 ? 'COMPANY' : 'FIRST_NAME')| translate"
+               [(ngModel)]="person.name">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput name="last-name" required
+               autocapitalize="words" autocomplete="family-name" autofocus
+               placeholder="{{'LAST_NAME' | translate}}"
+               [(ngModel)]="natural.lastName">
+      </md-input-container>
+
+      <md-input-container class="middle-width" *ngIf="person.documentType === 31">
+        <input mdInput name="natural-first-name" [required]="person.documentType === 31"
+                autocapitalize="words" autocomplete="given-name" autofocus
+                placeholder="{{'FIRST_NAME' | translate}}"
+                [(ngModel)]="personNatural.name">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput type="url" name="web"
+               autocomplete="url" inputmode="url"
+               placeholder="{{'URL' | translate}}"
+               [(ngModel)]="person.web">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput type="email" name="email" required
+               autocomplete="email" inputmode="email"
+               placeholder="{{'MAIL' | translate}}"
+               [(ngModel)]="natural.email">
+      </md-input-container>
+
+      <md-input-container class="middle-width">
+        <input mdInput name="natural-birthdate" required
+               [mdDatepicker]="picker" placeholder="{{'BIRTH_DATE' | translate}}"
+               *hideItDevice="['mobile','tablet']"
+               [min]="minDateDesktop" [max]="maxDateDesktop"
+               [(ngModel)]="natural.birthDate">
+         <button *hideItDevice="['mobile','tablet']" mdSuffix
+                 [mdDatepickerToggle]="picker"></button>
+      <md-datepicker #picker></md-datepicker>
+
+        <input mdInput name="natural-birthdate" required
+               autocomplete="bday" autofocus type="date"
+               *hideItDevice="['desktop']"
+               [min]="minDateMobile" [max]="maxDateMobile"
+               placeholder="{{'BIRTH_DATE' | translate}}"
+               [(ngModel)]="natural.birthDate">
+      </md-input-container>
+
+      <input class="middle-width" type="file" ng2FileSelect [uploader]="uploader" />
+
+      <md-card *ngIf="person.documentType === 31">
+
+        <md-card-header>
+          <md-card-title><h2>{{'OWNER_DATA' | translate}}</h2></md-card-title>
+        </md-card-header>
+
+        <md-card-content>
+          <md-input-container class="location">
+            <input mdInput name="natural-state" required
+                   placeholder="{{'STATE' | translate}}"
+                   [(ngModel)]="personNatural.contacts[0].state">
+          </md-input-container>
+
+          <md-input-container class="location">
+            <input mdInput name="natural-city" required
+                   placeholder="{{'CITY' | translate}}"
+                   [(ngModel)]="personNatural.contacts[0].city">
+          </md-input-container>
+
+          <md-input-container class="location">
+            <input mdInput type="tel" name="natural-phone" [required]="person.documentType === 31"
+                   autocomplete="tel" inputmode="tel"
+                   placeholder="{{'PHONE'| translate}}"
+                   [(ngModel)]="personNatural.contacts[0].phone">
+            <md-hint align="end"></md-hint>
+          </md-input-container>
+
+          <md-input-container class="full-width">
+            <input mdInput name="natural-address" autocomplete="street-address"
+                   placeholder="{{'ADDRESS' | translate}}"
+                   [(ngModel)]="personNatural.contacts[0].address">
+          </md-input-container>
+
+          <md-select name="natural-doctype" class="middle-width" [required]="person.documentType ===31"
+                     placeholder="{{'DOC_TYPE' | translate}}"
+                     [(ngModel)]="personNatural.documentType">
+            <md-option *ngFor="let type of typesNatural" [value]="type.id">
+              {{ type.name }}
+            </md-option>
+          </md-select>
+
+          <md-input-container class="middle-width">
+            <input mdInput name="natural-document" [required]="person.documentType === 31"
+                   autocomplete="off" inputmode="numeric"
+                   placeholder="{{'DOCUMENT' | translate}}"
+                   [(ngModel)]="personNatural.documentNumber">
+          </md-input-container>
+
+        </md-card-content>
+      </md-card>
+
+    </md-card-content>
+    <md-card-actions align="start|end">
+      <button md-raised-button type="submit"
+              [disabled]="!personForm.form.valid || loading !== 0">
+         {{(loading === 1 ? 'SUBMITING' : (loading === 2 ? 'SUCCES' : 'SUBMIT'))| translate}}
+      </button>
+    </md-card-actions>
+  </md-card>
+</form>

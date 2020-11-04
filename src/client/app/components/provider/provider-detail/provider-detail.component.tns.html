@@ -1,0 +1,40 @@
+<ActionBar [title]="'HOME' | translate" class="action-bar">
+  <ActionItem ios.position="right" android.position="popup">
+    <Button [text]="'MENU' | translate" (tap)="menu()" class="action-item"></Button>
+  </ActionItem>
+</ActionBar>
+
+<StackLayout class="form">
+  <StackLayout class="p-10">
+    <TextField name="company"
+               hint="{{'COMPANY' | translate}}"
+               [(ngModel)]="serviceProvider.name"></TextField>
+  </StackLayout>
+
+  <StackLayout class="input-field">
+    <TextField [(ngModel)]="serviceProvider.address" [hint]="'ADDRESS' | translate"></TextField>
+  </StackLayout>
+  <StackLayout class="input-field">
+    <TextField [(ngModel)]="serviceProvider.city" [hint]="'CITY' | translate"></TextField>
+  </StackLayout>
+  <StackLayout class="input-field">
+    <TextField [(ngModel)]="serviceProvider.state" [hint]="'STATE' | translate"></TextField>
+  </StackLayout>
+  <StackLayout class="input-field">
+    <TextField [(ngModel)]="serviceProvider.phone" [hint]="'PHONE' | translate"></TextField>
+  </StackLayout>
+  <StackLayout class="input-field">
+    <TextField [(ngModel)]="serviceProvider.web" [hint]="'URL' | translate"></TextField>
+  </StackLayout>
+  <StackLayout class="input-field">
+    <TextField [(ngModel)]="serviceProvider.social" [hint]="'SOCIAL' | translate"></TextField>
+  </StackLayout>
+
+  <!--<a [routerLink]="['/offices', serviceProvider.name]">{{'ADD_OFFICE' | translate}}</a>-->
+  <!--<button md-raised-button type="submit">{{'SUBMIT'| translate}}</button>-->
+
+
+  <Button [nsRouterLink]="['/offices', serviceProvider.name]" text="{{'ADD_OFFICE' | translate}}"
+          class="btn btn-outline"></Button>
+  <!--<Button type="submit">{{'SUBMIT'| translate}}</Button>-->
+</StackLayout>

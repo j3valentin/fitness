@@ -1,0 +1,9 @@
+<md-progress-bar *ngIf="loading !== 0" color="warn" mode="indeterminate"></md-progress-bar>
+<md-card *ngFor="let provider of providers">
+  <md-card-header>
+    <img md-card-avatar *ngIf="provider?.image" src="{{URL}}{{provider?.image}}" />
+    <md-card-title>
+      <h3>{{provider?.name}} {{provider?.natural?.lastName}}</h3>
+    </md-card-title>
+  </md-card-header>
+</md-card>

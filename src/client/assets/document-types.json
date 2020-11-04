@@ -1,0 +1,10 @@
+{
+    "CO": [
+        {"id": 13, "name": "Cédula de ciudadanía"},
+        {"id": 21, "name": "Tarjeta de extranjería"},
+        {"id": 22, "name": "Cédula de extranjería"},
+        {"id": 31, "name": "NIT"},
+        {"id": 41, "name": "Pasaporte"},
+        {"id": 42, "name": "Documento de identificación extranjero"}
+    ]
+}

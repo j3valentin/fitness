@@ -1,0 +1,67 @@
+<div>
+  <md-card>
+    <md-card-header>
+      <md-card-title>
+        <h2>{{plan?.name}}</h2>
+      </md-card-title>
+    </md-card-header>
+    <md-card-content>
+      <table>
+        <tr>
+          <td>
+            <b>{{'PERIODICITY' | translate}}:</b>
+          </td>
+          <td>
+            {{plan?.periodicity}}
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <b>{{'START_DATE' | translate}}:</b>
+          </td>
+          <td>
+            {{plan?.start | date: 'yyyy-MM-dd'}}
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <b>{{'END_DATE' | translate}}:</b>
+          </td>
+          <td>
+            {{plan?.end | date: 'yyyy-MM-dd'}}
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <b>{{'QUANTITY' | translate}}:</b>
+          </td>
+          <td>
+            {{plan?.quantity}}
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <b>{{'AMOUNT' | translate}}:</b>
+          </td>
+          <td>
+            {{plan?.amount | currency:'USD':true}}
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <b>{{'DESCRIPTION' | translate}}:</b>
+          </td>
+          <td>
+            {{plan?.description}}
+          </td>
+        </tr>
+
+      </table>
+    </md-card-content>
+  </md-card>
+</div>

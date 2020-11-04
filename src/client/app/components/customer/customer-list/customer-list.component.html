@@ -1,0 +1,11 @@
+<md-card *ngFor="let customer of customers | async ">
+  <md-card-header>
+    <img md-card-avatar *ngIf="customer?.image" src="{{URL}}{{customer?.image}}" />
+    <md-card-title>
+      <h3>{{customer?.name}} {{customer?.natural?.lastName}}</h3>
+    </md-card-title>
+    <md-card-subtitle>
+      <b>{{'AGE' | translate}}:</b> {{customer?.natural?.birthDate | age}}
+    </md-card-subtitle>
+  </md-card-header>
+</md-card>

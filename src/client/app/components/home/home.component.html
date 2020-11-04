@@ -1,0 +1,45 @@
+<md-card>
+  <md-card-content>
+
+    <!-- <md-slide-toggle color="warn">
+      <md-chip color="warn" selected="true">{{'TRAIN' | translate}}</md-chip>
+    </md-slide-toggle>
+
+    <md-slide-toggle color="warn">
+      <md-chip color="warn" selected="true">{{'DANCE' | translate}}</md-chip>
+    </md-slide-toggle>
+
+    <md-slide-toggle color="warn">
+      <md-chip color="warn" selected="true">{{'FOOD' | translate}}</md-chip>
+    </md-slide-toggle>
+
+    <md-input-container>
+      <input mdInput name="range" placeholder="{{'RANGE' | translate }} Km" (change)="getProviders($event.target.value)" [(ngModel)]="range"
+        type="number">
+    </md-input-container> -->
+
+    <!--<md-list *ngFor="let x of (providers$ | async )">
+      <md-list-item>{{x | json}}</md-list-item>
+    </md-list>-->
+
+    <md-grid-list cols="4" rowHeight="1:1">
+      <md-grid-tile *ngFor="let x of (providers$ | async )" [style.background]="white">
+        <md-card>
+          <md-card-header>
+            <img md-card-avatar *ngIf="x?.image" src="{{URL}}{{x?.image}}" />
+            <md-card-title>
+              {{x.name}}
+            </md-card-title>
+            <md-card-subtitle>
+              {{x.contacts[0].distance | number:'1.1-2'}} m*
+            </md-card-subtitle>
+          </md-card-header>
+        </md-card>
+      </md-grid-tile>
+    </md-grid-list>
+    *{{'APPROX' | translate}}
+  </md-card-content>
+  <md-card-actions align="start|end">
+  </md-card-actions>
+  <!--{{location |json}}-->
+</md-card>

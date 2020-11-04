@@ -1,0 +1,9 @@
+<div style="width:100%;margin: 0 auto;" *ngIf="loginService.token && securityService.hasRole('ROLE_USER')
+  && !securityService.hasRole('ROLE_EMPLOY') && !securityService.hasRole('ROLE_ADMIN')">
+  <qr-code [value]="loginService.currentUser.email" [size]="350"></qr-code>
+</div>
+
+<!-- <div style="margin: 0 auto;" *ngIf="loginService.token && securityService.hasRole('ROLE_EMPLOY') || securityService.hasRole('ROLE_ADMIN') ">
+  <qr-scanner [debug]="false" [mirror]="false" [stopAfterScan]="true" [updateTime]="500" (onRead)="read($event)" canvasWidth="100%"
+    canvasHeight="50%"></qr-scanner>
+</div> -->

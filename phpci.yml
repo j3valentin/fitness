@@ -1,0 +1,9 @@
+setup:
+    RNACode\PHPCI\NpmCache:
+        command: install
+
+    shell:
+     - "BUILD_PATH='/home/fire/nodejs/fitness-ng' ./replace.sh"
+     - "npm run build.prod -- --api=http://192.168.0.8/fitness-sf/api --base /fitness-ng"
+     - "date && echo 'compresing build prod ...' && cd dist && tar -c prod | bzip2 > /home/fire/fitness-ng-prod.tar.bz2 && date && echo 'compression complete'"
+     - "cd /home/fire/ && tar jvxf fitness-ng-prod.tar.bz2 && mv prod prueba/fitness-ng"

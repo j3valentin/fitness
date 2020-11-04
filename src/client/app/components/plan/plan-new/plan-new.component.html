@@ -1,0 +1,90 @@
+<md-progress-bar *ngIf="loading !== 0" color="warn" mode="indeterminate"></md-progress-bar>
+<form (ngSubmit)="createPlan()" #planForm="ngForm">
+  <div>
+    <md-card>
+      <md-card-content>
+
+        <md-input-container class="middle-width">
+          <input mdInput name="name" required
+                 type="text"
+                 placeholder="{{'NAME' | translate}}"
+                 [(ngModel)]="plan.name">
+        </md-input-container>
+
+        <md-input-container class="middle-width">
+          <input mdInput name="amount" required
+                 type="number"
+                 placeholder="{{'AMOUNT' | translate}}"
+                 [(ngModel)]="plan.amount">
+        </md-input-container>
+
+        <md-select name="periodicity" class="middle-width" required
+                   placeholder="{{'PERIODICITY' | translate}}"
+                   [(ngModel)]="plan.periodicity">
+          <md-option *ngFor="let period of periodicity"
+                     value="{{period}}">{{period}}
+          </md-option>
+        </md-select>
+
+        <md-input-container class="middle-width">
+          <input mdInput name="quantity" required
+                 type="number"
+                 placeholder="{{'QUANTITY' | translate}}"
+                 [(ngModel)]="plan.quantity">
+        </md-input-container>
+
+        <md-input-container class="middle-width">
+          <input mdInput name="start-date" required
+                 [mdDatepicker]="picker" placeholder="{{'START_DATE' | translate}}"
+                 *hideItDevice="['mobile','tablet']"
+                 [min]="minDateDesktop"
+                 [(ngModel)]="plan.start">
+          <button *hideItDevice="['mobile','tablet']" mdSuffix
+                 [mdDatepickerToggle]="picker"></button>
+          <md-datepicker #picker></md-datepicker>
+
+          <input mdInput name="start-date" required
+                 autocomplete="bday" autofocus type="date"
+                 *hideItDevice="['desktop']"
+                 [min]="minDateMobile"
+                 placeholder="{{'START_DATE' | translate}}"
+                 [(ngModel)]="plan.start">
+        </md-input-container>
+
+        <md-input-container class="middle-width">
+          <input mdInput name="end-date"
+                 [mdDatepicker]="picker2" placeholder="{{'END_DATE' | translate}}"
+                 *hideItDevice="['mobile','tablet']"
+                 [min]="plan.start"
+                 [(ngModel)]="plan.end">
+          <button *hideItDevice="['mobile','tablet']" mdSuffix
+                 [mdDatepickerToggle]="picker2"></button>
+          <md-datepicker #picker2></md-datepicker>
+
+          <input mdInput name="end-date"
+                 autocomplete="bday" autofocus type="date"
+                 *hideItDevice="['desktop']"
+                 [min]="plan.start"
+                 placeholder="{{'END_DATE' | translate}}"
+                 [(ngModel)]="plan.end">
+        </md-input-container>
+
+        <md-input-container class="full-width">
+          <textarea mdInput name="description" required
+                 type="text"
+                 placeholder="{{'DESCRIPTION' | translate}}"
+                 [(ngModel)]="plan.description">
+          </textarea>
+        </md-input-container>
+
+      </md-card-content>
+      <md-card-actions>
+        <button md-raised-button [disabled]="!planForm.form.valid || loading !== 0">
+                {{(loading === 1 ? 'SUBMITING' : (loading === 2 ? 'SUCCES' : 'SUBMIT'))| translate}}
+          </button>
+      </md-card-actions>
+    </md-card>
+  </div>
+</form>
+
+
